@@ -1,0 +1,15 @@
+{% extends "layouts/main.html" %}
+
+{% block content %}
+  <h2>Timelines</h2>
+  <div class="timelines">
+      {% for timeline in timelines %}
+          <div class="timeline">
+              <div class="timeline--name">
+                  {{timeline.title}}
+              </div>
+              <input type="text" value="{{timeline.rss_url()}}" />
+          </div>
+      {% endfor %}
+  </div>
+{% endblock %}

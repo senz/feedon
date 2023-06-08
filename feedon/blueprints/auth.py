@@ -1,24 +1,29 @@
 import requests
 import os
-from flask import Blueprint, flash, render_template, request, redirect
+from flask import Blueprint, flash, render_template, request, redirect, session, g
 
 import feedon.db as db
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 scope = 'read'
 
-def generate_redirect_uri(instance):
+def generate_redirect_uri(instance_domain):
     base_url = os.environ.get('BASE_URL', 'http://localhost:5000')
-    return f'{base_url}/auth/complete?instance_domain={instance.instance_domain}'
+    return f'{base_url}/auth/complete?instance_domain={instance_domain}'
 
 @bp.route('/login', methods=['GET'])
 def login():
+    if g.current_user:
+        return redirect('/')
+
     return render_template('auth/login.html')
 
 @bp.route('/begin', methods=['POST'])
 def begin():
+    if g.current_user:
+        return redirect('/')
+
     instance_domain = request.form.get('instance_domain', '')
-    print(instance_domain)
     if len(instance_domain) == 0:
         flash('Instance domain is required')
         return redirect('/auth/login')
@@ -33,7 +38,7 @@ def begin():
             url=f"https://{instance_domain}/api/v1/apps",
             data={
                 'client_name': 'Feed On This!',
-                'redirect_uris': generate_redirect_uri(instance),
+                'redirect_uris': generate_redirect_uri(instance_domain),
                 'scope': scope,
                 'website': 'https://localhost:5000',
             },
@@ -50,13 +55,16 @@ def begin():
     url = f"https://{instance.instance_domain}/oauth/authorize" \
         + f"?client_id={instance.client_id}" \
         + f"&scope=read" \
-        + f"&redirect_uri={generate_redirect_uri(instance)}" \
+        + f"&redirect_uri={generate_redirect_uri(instance_domain)}" \
         + f"&response_type=code"
 
     return redirect(url)
 
 @bp.route('/complete', methods=['GET'])
 def complete():
+    if g.current_user:
+        return redirect('/')
+
     instance_domain = request.args.get('instance_domain', None)
 
     instance = (
@@ -69,7 +77,7 @@ def complete():
         data={
             'client_id': instance.client_id,
             'client_secret': instance.client_secret,
-            'redirect_uri': generate_redirect_uri(instance),
+            'redirect_uri': generate_redirect_uri(instance_domain),
             'grant_type': 'authorization_code',
             'code': request.args.get('code'),
             'scope': scope,
@@ -85,12 +93,12 @@ def complete():
     )
 
     user_data = verify_resp.json()
-    user = db.User(
+    user = db.User.create(
         instance_domain=instance_domain,
         access_token=access_token,
         handle=user_data['username'],
     )
 
-    user.save()
+    session['user_id'] = user.id
 
-    return f"logged in as {verify_resp.json()['username']}"
+    return redirect('/')

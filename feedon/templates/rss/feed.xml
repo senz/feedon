@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>{{user.handle}}@{{user.instance_domain}} // {{timeline.title}}</title>
+        <description>RSSified timeline for {{user.handle}}@{{user.instance_domain}}'s {{timeline.title}} feed.</description>
+        <link>http://example.com</link>
+        <ttl>500</ttl>
+
+        {% for toot in toots %}
+        <item>
+            <pubDate>{{toot.created_at}}</pubDate>
+            <guid isPermalink="true">{{toot.uri}}</guid>
+            <title>{{toot.account.display_name}} ({{toot.account.acct}})</title>
+            <link>{{toot.url}}</link>
+            <description>
+                {{toot.content | safe}}
+            </description>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

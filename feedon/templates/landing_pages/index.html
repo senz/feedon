@@ -1,5 +1,17 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
-  <a href="/auth/login"></a>
+<div class="content">
+    <h1>FeeDon This!</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <p>Welcome! Please <a href="/auth/login">log in</a>.</p>
+</div>
 {% endblock %}

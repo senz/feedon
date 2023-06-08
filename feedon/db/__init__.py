@@ -1,4 +1,5 @@
 import peewee
+import requests
 import playhouse.sqlite_ext as sqlite_ext
 import os
 
@@ -20,8 +21,31 @@ class User(peewee.Model):
     instance_domain = peewee.CharField()
     access_token = peewee.CharField()
 
+    def get_client(self):
+        s = requests.Session()
+        s.headers['Authorization'] = f"Bearer {self.access_token}"
+
+        return s
+
+    def instance_url(self, url):
+        return f"https://{self.instance_domain}{url}"
+
     class Meta:
         table_name = 'users'
         database = db
 
-db.create_tables([User, Instance])
+class Timeline(peewee.Model):
+    id = peewee.AutoField()
+    title = peewee.CharField()
+    remote_id = peewee.IntegerField()
+    user_id = peewee.ForeignKeyField(User, backref='timelines')
+    password = peewee.CharField()
+
+    def rss_url(self):
+        return f"{os.environ.get('BASE_URL')}/rss/{self.user_id}/{self.password}"
+
+    class Meta:
+        table_name = 'timelines'
+        database = db
+
+db.create_tables([User, Instance, Timeline])
