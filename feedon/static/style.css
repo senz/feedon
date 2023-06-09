@@ -52,13 +52,18 @@ a:hover {
 footer {
     color: var(--dark-purple);
     font-size: 12px;
-    margin: 20px auto;
+    margin: 25px auto 15px auto;
     width: 100%;
     max-width: var(--max-width);
 }
 
 footer a {
-    color: #D9FFA9;
+    color: var(--dark-purple) !important;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    text-decoration: none;
 }
 
 .timeline {
