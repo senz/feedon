@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% macro render_toot_content(toot, parent=false) %}
+    {% if parent %}
+        <summary>RT: {{ toot.content | striptags }}</summary>
+    {% else %}
+        <summary>{{ toot.content | striptags }}</summary>
+    {% endif %}
+    <content type="html">
+        {% if parent %}
+            <p>Boosted by {{parent.account.display_name}} (<a href="{{parent.account.url}}">{{parent.account.acct}})</a>:</p>
+        {% endif %}
+
+        {% if toot.content %}
+            <blockquote>
+                {{toot.content | safe}}
+            </blockquote>
+        {% endif %}
+        <p>- {{toot.account.display_name}} (<a href="{{toot.account.url}}">{{toot.account.acct}}</a>)</p>
+
+        {% for attachment in toot.media_attachments %}
+            {% if attachment.type == "image" %}
+                <p>
+                    <a href="{{attachment.remote_url}}">
+                        <img src="{{attachment.preview_url}}" width="100%" />
+                    </a>
+                </p>
+                {% if attachment.description %}
+                    <p>
+                        <i>{{attachment.description}}</i>
+                    </p>
+                {% endif %}
+            {% else %}
+                <b>Attachment {{attachment.type}} not supported.</b>
+            {% endif %}
+        {% endfor %}
+    </content>
+{% endmacro %}
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>{{user.handle}}@{{user.instance_domain}}: {{timeline.title}}</title>
+    <id>{{base_url}}/feeds</id>
+    <link rel="alternate" href="{{base_url}}/feeds"/>
+    <link href="{{feed_url}}" rel="self"/>
+    <updated>{{last_update_time}}</updated>
+	<author>
+		<name>FeeDon This!</name>
+	</author>
+    {% for toot in toots %}
+	<entry>
+        {% if toot.reblog %}
+            <title>[RT: {{toot.account.display_name}}]: {{toot.reblog.account.display_name}} ({{toot.reblog.account.acct}}</title>
+        {% else %}
+            <title>{{toot.account.display_name}} ({{toot.account.acct}}) </title>
+        {% endif %}
+		<link rel="alternate" type="text/html" href="{{toot.uri}}"/>
+        <id>{{toot.uri}}</id>
+        <published>{{toot.created_at}}</published>
+		<updated>{{toot.created_at}}</updated>
+        {% if toot.reblog %}
+            {{render_toot_content(toot.reblog, toot)}}
+        {% else %}
+            {{render_toot_content(toot)}}
+        {% endif %}
+	</entry>
+    {% endfor %}
+</feed>

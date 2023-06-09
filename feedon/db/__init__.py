@@ -42,7 +42,7 @@ class Timeline(peewee.Model):
     password = peewee.CharField()
 
     def rss_url(self):
-        return f"{os.environ.get('BASE_URL')}/rss/{self.user_id}/{self.password}"
+        return f"{os.environ.get('BASE_URL')}/feeds/{self.user_id}/{self.password}/atom.xml"
 
     class Meta:
         table_name = 'timelines'

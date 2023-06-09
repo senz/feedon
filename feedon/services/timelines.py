@@ -79,6 +79,13 @@ def sync_timelines(user: db.User):
         db.Timeline.user_id == user.id
     )
 
+def __process_status(status):
+    status['content'] = status['content'].replace('<br>', '<br />')
+    if 'reblog' in status and status['reblog']:
+        status['reblog']['content'] = status['reblog']['content'].replace('<br>', '<br />')
+
+    return status
+
 def fetch_timeline(user: db.User, timeline: db.Timeline):
     client = user.get_client()
     
@@ -93,4 +100,4 @@ def fetch_timeline(user: db.User, timeline: db.Timeline):
 
     utils.validate_request(tl)
 
-    return tl.json()
+    return [__process_status(s) for s in tl.json()]
