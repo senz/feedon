@@ -1,0 +1,75 @@
+:root {
+    --light: #FFF;
+    --dark: #000;
+    --blue: #00B4FF;
+    --dark-purple: #776191;
+    --max-width: 600px;
+    --gray: #EFEFEF;
+}
+
+body {
+    background: var(--dark);
+    color: var(--light);
+    font-family: monospace, sans-serif;
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+}
+
+.content {
+    margin: 0px auto;
+    width: 100%;
+    max-width: var(--max-width);
+    padding: 0px 15px;
+}
+
+code {
+    color: #D9FFA9;
+}
+
+input {
+    font-family: monospace, sans-serif;
+    background: var(--light);
+    border: 1px solid var(--gray);
+    font-size: 18px;
+    color: var(--dark);
+    padding: 5px 10px;
+}
+
+a {
+    color: var(--blue);
+    text-decoration: underline;
+}
+
+a:visited {
+    color: var(--blue);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+footer {
+    color: var(--dark-purple);
+    font-size: 12px;
+    margin: 20px auto;
+    width: 100%;
+    max-width: var(--max-width);
+}
+
+footer a {
+    color: #D9FFA9;
+}
+
+.timeline {
+    margin-bottom: 15px;
+}
+
+.timeline input {
+    width: 100%;
+    display: block;
+}
+
+.timeline--name {
+    margin-bottom: 5px;
+}

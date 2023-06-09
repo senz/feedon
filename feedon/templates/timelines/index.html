@@ -1,14 +1,28 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
-  <h2>Timelines</h2>
+  <h2>Your Feeds</h2>
+  <p>
+    This is a list of all timelines available on your account and a feed URL
+    that can be added to your RSS reader.
+  </p>
+  <p>
+      <b>Please keep these feed URLs safe! They are similar to passwords, as
+      they grant access to sensitive information.</b>
+  </p>
+  <p>
+    Your timeline may contain posts that are
+    marked as follower-only and/or contain sensitive information that the
+    author may not wish to share with prying eyes. If you believe any of your
+    timeline URLs may have been compromised, you may generate a new URL here.
+  </p>
   <div class="timelines">
       {% for timeline in timelines %}
           <div class="timeline">
               <div class="timeline--name">
                   {{timeline.title}}
               </div>
-              <input type="text" value="{{timeline.rss_url()}}" />
+              <input disabled type="text" value="{{timeline.rss_url()}}" />
           </div>
       {% endfor %}
   </div>

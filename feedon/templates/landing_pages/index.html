@@ -1,17 +1,41 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
-<div class="content">
-    <h1>FeeDon This!</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{message}}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    <p>Welcome! Please <a href="/auth/login">log in</a>.</p>
+    <h2>Intro</h2>
+    <p>
+        FeeDon This! is a simple service that converts your Mastodon timelines
+        into RSS feeds. In essense, it enables you to use your RSS reader as a
+        Mastodon client, nicely formatting your home, local, federated, and
+        list timelines into Atom feeds.
+    </p>
+    <h2>Privacy Notes</h2>
+    <p>
+        Before getting started, please note that logging in with this service
+        will store the following information on the hosting server:
+    </p>
+    <ul>
+        <li>Your Mastodon handle</li>
+        <li>An authorization token for your account granting read-only access to your timelines</li>
+        <li>Metadata about the lists you've created</li>
+        <li>Metadata about your Mastodon instance</h2>
+    </ul>
+    <p>
+        While this service will not store any posts, your account's access
+        token will grant it access to read your timelines, which includes
+        follower-only posts and DMs. Make sure you trust your admin before
+        authenticating!
+    </p>
+    <p>
+        If you want to be super duper careful, you can always self-host by
+        setting up your own instance of FeeDon This!. See the project's
+        <a href="https://sr.ht/~vesto/feedon-this">SourceHut repository</a> for
+        details.
+    </p>
+
+    <h2>Get started</h2>
+    <p>
+        If this sounds great to you, you may <a href="/auth/login">log in</a>
+        to get started.
+    </p>
 </div>
 {% endblock %}

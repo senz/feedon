@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %}Feed On This!{% endblock %}</title>
-  </head>
-  <body>
-    {% block content %}
-    {% endblock %}
-  </body>
+    <head>
+        <title>{% block title %}Feed On This!{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    </head>
+    <body>
+        <div class="content">
+            <h1>FeeDon! This</h1>
+            <p><i>It's a feed for your feeds!</i></p>
+        </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="content">
+                    <ul class="flash">
+                        {% for message in messages %}
+                            <li>{{message}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <footer>
+            FeeDon This! is &copy;2023 <a href="https://www.stevegattuso.me">Steve Gattuso</a>, released under the <a href="https://git.sr.ht/~vesto/feedon-this/tree/main/item/LICENSE.txt">GNU GPL v3 License</a>.
+        </footer>
+    </body>
 </html>

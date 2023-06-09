@@ -1,17 +1,14 @@
 {% extends "layouts/main.html" %}
 
 {% block content %}
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul>
-        {% for message in messages %}
-          <li>{{message}}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-  <form method="POST" action="/auth/begin">
+<h2>Login</h2>
+<p>
+    In order to get started you'll need to provide your instance domain. If
+    your handle is <code>mayahee@mastodon.social</code>, your instance domain
+    would be <code>mastodon.social</code>.
+</p>
+<form method="POST" action="/auth/begin">
     <input type="text" name="instance_domain" placeholder="instance domain" />
     <input type="submit" value="Login" />
-  </form>
+</form>
 {% endblock %}
