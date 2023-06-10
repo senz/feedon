@@ -7,7 +7,15 @@
     <body>
         <div class="content">
             <h1>FeeDon! This</h1>
-            <p><i>It's a feed for your feeds!</i></p>
+            <nav>
+                {% if g.current_user %}
+                <ul>
+                    <li><a href="/feeds">Your Feeds</a></li>
+                    <li><a href="/auth/logout">Logout</a></li>
+                </ul>
+                {% endif %}
+            </nav>
+            <hr />
         </div>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
