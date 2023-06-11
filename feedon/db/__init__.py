@@ -1,7 +1,8 @@
 import peewee
 import requests
-import playhouse.sqlite_ext as sqlite_ext
+import secrets
 import os
+import playhouse.sqlite_ext as sqlite_ext
 
 db = peewee.SqliteDatabase(os.environ.get('DB_PATH', 'feedon.db'))
 
@@ -40,6 +41,10 @@ class Timeline(peewee.Model):
     remote_id = peewee.IntegerField()
     user_id = peewee.ForeignKeyField(User, backref='timelines')
     password = peewee.CharField()
+
+    @classmethod
+    def generate_password(cls):
+        return secrets.token_urlsafe(16)
 
     def rss_url(self):
         return f"{os.environ.get('BASE_URL')}/feeds/{self.user_id}/{self.password}/atom.xml"

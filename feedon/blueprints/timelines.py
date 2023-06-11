@@ -1,4 +1,4 @@
-from flask import Blueprint, g, render_template, redirect
+from flask import Blueprint, g, render_template, redirect, flash
 import requests
 
 import feedon.db as db
@@ -15,3 +15,16 @@ def check_auth():
 def index():
     tls = timelines.sync_timelines(g.current_user)
     return render_template('timelines/index.html', timelines=tls)
+
+@bp.route('/<timeline_id>/regenerate-url', methods=['POST'])
+def regenerate_url(timeline_id):
+    timeline = db.Timeline.select().where(
+        (db.Timeline.user_id == g.current_user.id) &
+        (db.Timeline.id == timeline_id)
+    ).first()
+
+    timeline.password = db.Timeline.generate_password()
+    timeline.save()
+
+    flash(f"{timeline.title} timeline's URL has been regenerated")
+    return redirect('/timelines')

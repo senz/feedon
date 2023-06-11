@@ -1,5 +1,3 @@
-import secrets
-
 import feedon.utils as utils
 import feedon.db as db
 
@@ -33,7 +31,7 @@ def sync_timelines(user: db.User):
             tl = db.Timeline(
                 remote_id=remote_list['id'],
                 user_id=user.id,
-                password=secrets.token_urlsafe(12),
+                password=db.Timeline.generate_password(),
             )
 
         tl.title = remote_list['title']

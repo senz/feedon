@@ -78,3 +78,7 @@ footer a:hover {
 .timeline--name {
     margin-bottom: 5px;
 }
+
+.timeline--details {
+    display: flex;
+}

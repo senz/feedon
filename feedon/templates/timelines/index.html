@@ -14,7 +14,8 @@
     Your timeline may contain posts that are
     marked as follower-only and/or contain sensitive information that the
     author may not wish to share with prying eyes. If you believe any of your
-    timeline URLs may have been compromised, you may generate a new URL here.
+    timeline URLs may have been compromised, you may generate a new URL by
+    clicking on the ↻ button.
   </p>
   <div class="timelines">
       {% for timeline in timelines %}
@@ -22,7 +23,12 @@
               <div class="timeline--name">
                   {{timeline.title}}
               </div>
-              <input disabled type="text" value="{{timeline.rss_url()}}" />
+              <div class="timeline--details">
+                  <input disabled type="text" value="{{timeline.rss_url()}}" />
+                  <form method="POST" action="/timelines/{{timeline.id}}/regenerate-url">
+                      <input type="submit" value="↻" title="Regenerate feed URL" />
+                  </form>
+              </div>
           </div>
       {% endfor %}
   </div>
