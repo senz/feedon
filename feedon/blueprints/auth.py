@@ -11,6 +11,12 @@ def generate_redirect_uri(instance_domain):
     base_url = os.environ.get('BASE_URL', 'http://localhost:5000')
     return f'{base_url}/auth/complete?instance_domain={instance_domain}'
 
+@bp.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    flash('You have been logged out successfully.')
+    return redirect('/')
+
 @bp.route('/login', methods=['GET'])
 def login():
     if g.current_user:

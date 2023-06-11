@@ -40,7 +40,7 @@ def sync_timelines(user: db.User):
     # Ensure we have home/local/federated feeds
     home_timeline = db.Timeline.get_or_none(
         (db.Timeline.user_id == user.id) &
-        (db.Timeline.remote_id == -1)
+        (db.Timeline.remote_id == -3)
     )
     local_timeline = db.Timeline.get_or_none(
         (db.Timeline.user_id == user.id) &
@@ -48,14 +48,14 @@ def sync_timelines(user: db.User):
     )
     federated_timeline = db.Timeline.get_or_none(
         (db.Timeline.user_id == user.id) &
-        (db.Timeline.remote_id == -3)
+        (db.Timeline.remote_id == -1)
     )
 
     if not home_timeline:
         db.Timeline.create(
             title="Home",
             user_id=user.id,
-            remote_id=-1,
+            remote_id=-3,
             password=secrets.token_urlsafe(12),
         )
     if not local_timeline:
@@ -69,13 +69,13 @@ def sync_timelines(user: db.User):
         db.Timeline.create(
             title="Federated",
             user_id=user.id,
-            remote_id=-3,
+            remote_id=-1,
             password=secrets.token_urlsafe(12),
         )
 
     return db.Timeline.select().where(
         db.Timeline.user_id == user.id
-    )
+    ).order_by(db.Timeline.remote_id.asc())
 
 def __process_status(status):
     status['content'] = status['content'].replace('<br>', '<br />')
@@ -87,11 +87,11 @@ def __process_status(status):
 def fetch_timeline(user: db.User, timeline: db.Timeline):
     client = user.get_client()
     
-    if timeline.remote_id == -1:
+    if timeline.remote_id == -3:
         tl = client.get(user.instance_url('/api/v1/timelines/home'))
     elif timeline.remote_id == -2:
         tl = client.get(user.instance_url('/api/v1/timelines/local'))
-    elif timeline.remote_id == -3:
+    elif timeline.remote_id == -1:
         tl = client.get(user.instance_url('/api/v1/timelines/public'))
     else:
         tl = client.get(user.instance_url(f'/api/v1/timelines/list/{timeline.remote_id}'))
