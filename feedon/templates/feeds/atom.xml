@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-{% macro render_toot_content(toot, parent=false) %}
-    {% if parent %}
-        <summary>RT: {{ toot.content | striptags }}</summary>
-    {% else %}
-        <summary>{{ toot.content | striptags }}</summary>
+{%- macro render_toot_content(toot, parent=false) -%}
+    {%- if parent -%}
+        <p>Boosted by {{parent.account.display_name}} (<a href="{{parent.account.url}}">{{parent.account.acct}})</a>:</p>
+    {%- endif -%}
+
+    {% if toot.content %}
+        <blockquote>
+            {{toot.content | safe}}
+        </blockquote>
     {% endif %}
-    <content type="html">
-        {% if parent %}
-            <p>Boosted by {{parent.account.display_name}} (<a href="{{parent.account.url}}">{{parent.account.acct}})</a>:</p>
-        {% endif %}
+    <p>- {{toot.account.display_name}} (<a href="{{toot.account.url}}">{{toot.account.acct}}</a>)</p>
 
-        {% if toot.content %}
-            <blockquote>
-                {{toot.content | safe}}
-            </blockquote>
-        {% endif %}
-        <p>- {{toot.account.display_name}} (<a href="{{toot.account.url}}">{{toot.account.acct}}</a>)</p>
-
-        {% for attachment in toot.media_attachments %}
-            {% if attachment.type == "image" %}
+    {% for attachment in toot.media_attachments %}
+        {% if attachment.type == "image" %}
+            <p>
+                <a href="{{attachment.remote_url}}">
+                    <img src="{{attachment.preview_url}}" width="100%" />
+                </a>
+            </p>
+            {% if attachment.description %}
                 <p>
-                    <a href="{{attachment.remote_url}}">
-                        <img src="{{attachment.preview_url}}" width="100%" />
-                    </a>
+                    <i>{{attachment.description}}</i>
                 </p>
-                {% if attachment.description %}
-                    <p>
-                        <i>{{attachment.description}}</i>
-                    </p>
-                {% endif %}
-            {% else %}
-                <b>Attachment {{attachment.type}} not supported.</b>
             {% endif %}
-        {% endfor %}
-    </content>
-{% endmacro %}
+        {% else %}
+            <b>Attachment {{attachment.type}} not supported.</b>
+        {% endif %}
+    {% endfor %}
+{%- endmacro -%}
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>{{timeline.title}}</title>
     <id>{{base_url}}/feeds</id>
@@ -63,11 +56,15 @@
         {% endif %}
         <published>{{toot.created_at}}</published>
 		<updated>{{toot.created_at}}</updated>
-        {% if toot.reblog %}
-            {{render_toot_content(toot.reblog, toot)}}
-        {% else %}
-            {{render_toot_content(toot)}}
-        {% endif %}
+        <content type="html">
+            {% filter forceescape %}
+                {% if toot.reblog %}
+                    {{render_toot_content(toot.reblog, toot)}}
+                {% else %}
+                    {{render_toot_content(toot)}}
+                {% endif %}
+            {% endfilter %}
+        </content>
 	</entry>
     {% endfor %}
 </feed>
