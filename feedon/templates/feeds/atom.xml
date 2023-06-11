@@ -36,23 +36,31 @@
     </content>
 {% endmacro %}
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>{{user.handle}}@{{user.instance_domain}}: {{timeline.title}}</title>
+    <title>{{timeline.title}}</title>
     <id>{{base_url}}/feeds</id>
     <link rel="alternate" href="{{base_url}}/feeds"/>
     <link href="{{feed_url}}" rel="self"/>
-    <updated>{{last_update_time}}</updated>
-	<author>
-		<name>FeeDon This!</name>
-	</author>
+    <updated>{{last_update_time.strftime('%Y-%m-%dT%H:%M')}}:00Z</updated>
     {% for toot in toots %}
 	<entry>
         {% if toot.reblog %}
-            <title>[RT: {{toot.account.display_name}}]: {{toot.reblog.account.display_name}} ({{toot.reblog.account.acct}}</title>
+            <title>RT by {{toot.account.display_name}}: {{toot.reblog.account.display_name}} ({{toot.reblog.account.acct}}</title>
+            <author>
+                <name>{{toot.reblog.account.display_name}} ({{toot.reblog.account.acct}})</name>
+            </author>
         {% else %}
             <title>{{toot.account.display_name}} ({{toot.account.acct}}) </title>
+            <author>
+                <name>{{toot.account.display_name}} ({{toot.account.acct}})</name>
+            </author>
         {% endif %}
-		<link rel="alternate" type="text/html" href="{{toot.uri}}"/>
-        <id>{{toot.uri}}</id>
+        {% if toot.reblog %}
+            <id>{{toot.reblog.url}}</id>
+            <link rel="alternate" type="text/html" href="{{toot.reblog.url}}"/>
+        {% else %}
+            <id>{{toot.url}}</id>
+            <link rel="alternate" type="text/html" href="{{toot.url}}"/>
+        {% endif %}
         <published>{{toot.created_at}}</published>
 		<updated>{{toot.created_at}}</updated>
         {% if toot.reblog %}

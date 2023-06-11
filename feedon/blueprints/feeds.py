@@ -22,11 +22,11 @@ def render_feed(user_id, password):
         user=user,
         timeline=timeline,
         toots=toots,
-        last_update_time=datetime.datetime.utcnow().isoformat('T'),
+        last_update_time=datetime.datetime.utcnow(),
         base_url=os.environ.get('BASE_URL'),
         feed_url=f"{os.environ.get('BASE_URL')}/feeds/{user_id}/{password}/atom.xml",
     )
 
     resp = Response(rendered_tpl)
-    resp.headers['Content-Type'] = 'Content-Type: application/atom+xml'
+    resp.headers['Content-Type'] = 'application/atom+xml'
     return resp
