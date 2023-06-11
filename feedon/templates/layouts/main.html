@@ -13,6 +13,9 @@
                     <li><a href="/feeds">Your Feeds</a></li>
                     <li><a href="/auth/logout">Logout</a></li>
                 </ul>
+                <ul>
+                    <li>{{g.current_user.handle}}@{{g.current_user.instance_domain}}</li>
+                </ul>
                 {% endif %}
             </nav>
             <hr />
