@@ -56,21 +56,21 @@ def sync_timelines(user: db.User):
             title="Home",
             user_id=user.id,
             remote_id=-3,
-            password=secrets.token_urlsafe(12),
+            password=db.Timeline.generate_password(),
         )
     if not local_timeline:
         db.Timeline.create(
             title="Local",
             user_id=user.id,
             remote_id=-2,
-            password=secrets.token_urlsafe(12),
+            password=db.Timeline.generate_password(),
         )
     if not federated_timeline:
         db.Timeline.create(
             title="Federated",
             user_id=user.id,
             remote_id=-1,
-            password=secrets.token_urlsafe(12),
+            password=db.Timeline.generate_password(),
         )
 
     return db.Timeline.select().where(
