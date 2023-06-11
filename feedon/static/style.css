@@ -37,7 +37,7 @@ code {
     color: #D9FFA9;
 }
 
-input {
+input, button {
     font-family: monospace, sans-serif;
     background: var(--light);
     border: 1px solid var(--gray);

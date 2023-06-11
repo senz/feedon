@@ -25,6 +25,7 @@
               </div>
               <div class="timeline--details">
                   <input disabled type="text" value="{{timeline.rss_url()}}" />
+                  <button class="timeline--copy" data-url="{{timeline.rss_url()}}" title="Copy to clipboard">📋</button>
                   <form method="POST" action="/timelines/{{timeline.id}}/regenerate-url">
                       <input type="submit" value="↻" title="Regenerate feed URL" />
                   </form>
@@ -32,4 +33,24 @@
           </div>
       {% endfor %}
   </div>
+  <script>
+  function copyToClipboard(e) {
+    const url = e.target.getAttribute('data-url');
+    navigator.clipboard.writeText(url)
+      .then(() => {
+        e.target.innerText = '✅';
+        e.target.disabled = true;
+        setTimeout(() => {
+          e.target.innerText = '📋';
+          e.target.disabled = false;
+        }, 1000);
+      }, () => {
+        alert('Could not write to clipboard');
+      });
+  }
+  document.querySelectorAll('.timeline--copy').forEach((el) => {
+    el.addEventListener('click', copyToClipboard);
+  })
+  </script>
+
 {% endblock %}
