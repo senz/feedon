@@ -30,6 +30,9 @@ class User(peewee.Model):
 
     def instance_url(self, url):
         return f"https://{self.instance_domain}{url}"
+    
+    def delete_account(self):
+        return self.delete_instance(recursive=True)
 
     class Meta:
         table_name = 'users'

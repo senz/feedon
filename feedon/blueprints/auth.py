@@ -108,3 +108,14 @@ def complete():
     session['user_id'] = user.id
 
     return redirect('/')
+
+@bp.route('/delete', methods=['GET'])
+def delete_account():
+    if request.args.get('confirm') != 'yes':
+        return render_template('auth/delete.html')
+
+    g.current_user.delete_account()
+
+    session.clear()
+    flash('You are now logged out and all of your account\'s data has been deleted from the database. It was fun while it lasted!')
+    return redirect('/')
