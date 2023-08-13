@@ -15,7 +15,11 @@
         {% if attachment.type == "image" %}
             <p>
                 <a href="{{attachment.remote_url}}">
+                    {% if attachment.description %}
+                    <img alt="{{attachment.description}}" title="{{attachment.description}}" src="{{attachment.preview_url}}" width="100%" />
+                    {% else %}
                     <img src="{{attachment.preview_url}}" width="100%" />
+                    {% endif %}
                 </a>
             </p>
             {% if attachment.description %}
