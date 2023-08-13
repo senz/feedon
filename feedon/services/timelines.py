@@ -6,20 +6,20 @@ def sync_timelines(user: db.User):
     remote_lists = client.get(user.instance_url('/api/v1/lists'))
     utils.validate_request(remote_lists)
 
-    remote_ids = {l['id'] for l in remote_lists.json()}
+    remote_ids = {int(l['id']) for l in remote_lists.json()}
 
     local_lists = db.Timeline.select().where(
         db.Timeline.user_id == user.id
     )
-    local_ids = {l.remote_id for l in local_lists}
+    local_ids = {int(l.remote_id) for l in local_lists}
 
     # Delete any lists that we have stored locally but no longer exist on
     # their account
-    to_delete = local_lists - remote_ids - {-1, -2, -3}
+    to_delete = local_ids - remote_ids - {-1, -2, -3}
     db.Timeline.delete().where(
-        db.Timeline.id.in_(to_delete) &
-        db.Timeline.user_id == user.id
-    )
+        (db.Timeline.remote_id.in_(to_delete)) &
+        (db.Timeline.user_id == user.id)
+    ).execute()
 
     # Update all existing lists
     for remote_list in remote_lists.json():
