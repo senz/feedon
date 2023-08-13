@@ -99,11 +99,21 @@ def complete():
     )
 
     user_data = verify_resp.json()
-    user = db.User.create(
-        instance_domain=instance_domain,
-        access_token=access_token,
-        handle=user_data['username'],
+
+    # Check to see if the user already exists
+    user = db.User.get_or_none(
+        (db.User.instance_domain == instance_domain) &
+        (db.User.handle == user_data['username'])
     )
+    if user is None:
+        user = db.User.create(
+            instance_domain=instance_domain,
+            access_token=access_token,
+            handle=user_data['username'],
+        )
+    else:
+        user.access_token = access_token
+        user.save()
 
     session['user_id'] = user.id
 

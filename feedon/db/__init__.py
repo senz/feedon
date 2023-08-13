@@ -18,8 +18,8 @@ class Instance(peewee.Model):
 
 class User(peewee.Model):
     id = peewee.AutoField()
-    handle = peewee.CharField()
     instance_domain = peewee.CharField()
+    handle = peewee.CharField()
     access_token = peewee.CharField()
 
     def get_client(self):
@@ -37,6 +37,9 @@ class User(peewee.Model):
     class Meta:
         table_name = 'users'
         database = db
+        indexes = (
+            (('instance_domain', 'handle'), True),
+        )
 
 class Timeline(peewee.Model):
     id = peewee.AutoField()
