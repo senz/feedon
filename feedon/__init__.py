@@ -1,5 +1,7 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask, g, session, flash, redirect
-import datetime
 import os
 
 import feedon.db as db
