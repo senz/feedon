@@ -1,7 +1,7 @@
 # FeeDon
 FeeDon is a service for Mastodon instances that allows users to generate RSS feeds from their home timeline, local timeline, and any lists they've created. Technically speaking you can _mostly_ do this by just subscribing to individual users' timelines in your RSS reader, but this doesn't work well if you want to keep your RSS reader in-sync with who you follow or follow users with private posts.
 
-<img src="https://git.sr.ht/~vesto/feedon/blob/1cd87db7167f9d19fce10d52f37a62d20a05c8fe/docs/images/screenshot.png" width="400" alt="A screenshot of FeedOn in action" />
+<img src="https://git.sr.ht/~vesto/feedon/blob/main/docs/images/screenshot.png" width="400" alt="A screenshot of FeedOn in action" />
 
 ## Getting started
 While it's perfectly possible to run your own instance, it's much easier to use somebody else's instance. If this takes off I hope to run a publicly accessible instance for others, but given that the project is still in its early phases I'm limiting my instance for a select number of testers.
