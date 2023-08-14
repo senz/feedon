@@ -40,5 +40,9 @@ You've probably already noticed that this project is a bit different than other 
 
 I'm pretty new to using SourceHut, so let's see how this goes!
 
+## FAQ
+### What's with the stupid name?
+no u.
+
 ## License
 This project is licensed under the GNU General Public License v3. More information can be found in the LICENSE.txt file.
