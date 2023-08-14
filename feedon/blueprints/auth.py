@@ -1,6 +1,6 @@
 import requests
 import os
-from flask import Blueprint, flash, render_template, request, redirect, session, g
+from flask import Blueprint, flash, render_template, request, redirect, session, g, current_app
 
 import feedon.db as db
 
@@ -40,15 +40,22 @@ def begin():
     )
 
     if instance is None:
-        resp = requests.post(
-            url=f"https://{instance_domain}/api/v1/apps",
-            data={
-                'client_name': 'FeedOn',
-                'redirect_uris': generate_redirect_uri(instance_domain),
-                'scope': scope,
-                'website': os.environ.get('BASE_URL'),
-            },
-        )
+        try:
+            resp = requests.post(
+                url=f"https://{instance_domain}/api/v1/apps",
+                data={
+                    'client_name': 'FeedOn',
+                    'redirect_uris': generate_redirect_uri(instance_domain),
+                    'scope': scope,
+                    'website': os.environ.get('BASE_URL'),
+                },
+            )
+        except Exception as e:
+            current_app.logger.error("Could not connect to instance:")
+            current_app.logger.error(e)
+
+            flash('Could not connect to instance.')
+            return redirect('/auth/login')
 
         credentials = resp.json()
         instance = db.Instance.create(
