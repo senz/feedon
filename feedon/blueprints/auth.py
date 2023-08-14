@@ -43,10 +43,10 @@ def begin():
         resp = requests.post(
             url=f"https://{instance_domain}/api/v1/apps",
             data={
-                'client_name': 'Feed On This!',
+                'client_name': 'FeedOn',
                 'redirect_uris': generate_redirect_uri(instance_domain),
                 'scope': scope,
-                'website': 'https://localhost:5000',
+                'website': os.environ.get('BASE_URL'),
             },
         )
 
