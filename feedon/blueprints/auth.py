@@ -44,7 +44,7 @@ def begin():
             resp = requests.post(
                 url=f"https://{instance_domain}/api/v1/apps",
                 data={
-                    'client_name': 'FeedOn',
+                    'client_name': 'FeeDon',
                     'redirect_uris': generate_redirect_uri(instance_domain),
                     'scope': scope,
                     'website': os.environ.get('BASE_URL'),
