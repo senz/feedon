@@ -1,3 +1,5 @@
+import requests
+
 import feedon.utils as utils
 import feedon.db as db
 
@@ -100,6 +102,6 @@ def fetch_timeline(user: db.User, timeline: db.Timeline):
     else:
         tl = client.get(user.instance_url(f'/api/v1/timelines/list/{timeline.remote_id}'))
 
-    utils.validate_request(tl)
+    tl = utils.validate_and_parse_request(tl)
 
-    return [__process_status(s) for s in tl.json()]
+    return [__process_status(s) for s in tl]
