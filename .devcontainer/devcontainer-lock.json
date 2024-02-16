@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/poetry:2": {
+      "version": "2.0.17",
+      "resolved": "ghcr.io/devcontainers-contrib/features/poetry@sha256:85ad0e0190682104214e5ae4faa2bf8c2e181802567c01db0ef2dc9a70790f32",
+      "integrity": "sha256:85ad0e0190682104214e5ae4faa2bf8c2e181802567c01db0ef2dc9a70790f32"
+    }
+  }
+}
