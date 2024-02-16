@@ -1,4 +1,5 @@
 import requests
+import logging
 
 import feedon.utils as utils
 import feedon.db as db
@@ -9,8 +10,9 @@ PUBLIC_TIMELINE_ID = -1
 
 def sync_timelines(user: db.User):
     client = user.get_client()
+    logging.error(user.instance_url('/api/v1/lists'))
     remote_lists = client.get(user.instance_url('/api/v1/lists'))
-    utils.validate_request(remote_lists)
+    # utils.validate_and_parse_request(remote_lists)
 
     remote_ids = {int(l['id']) for l in remote_lists.json()}
 
@@ -96,7 +98,7 @@ def fetch_timeline(user: db.User, timeline: db.Timeline):
     if timeline.remote_id == HOME_TIMELINE_ID:
         tl = client.get(user.instance_url('/api/v1/timelines/home'))
     elif timeline.remote_id == LOCAL_TIMELINE_ID:
-        tl = client.get(user.instance_url('/api/v1/timelines/local'))
+        tl = client.get(user.instance_url('/api/v1/timelines/public?local=1'))
     elif timeline.remote_id == PUBLIC_TIMELINE_ID:
         tl = client.get(user.instance_url('/api/v1/timelines/public'))
     else:
