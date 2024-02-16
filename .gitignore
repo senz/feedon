@@ -4,3 +4,6 @@ __pycache__
 .envrc
 *.db
 .direnv
+data/
+.vscode/
+docker-compose.override.yaml
