@@ -1,0 +1,16 @@
+version: "3"
+services:
+  flask: 
+    restart: unless-stopped
+    build:
+      context: .
+    # flask requires SIGINT to stop gracefully
+    # (default stop signal from Compose is SIGTERM)
+    stop_signal: SIGINT
+    environment:
+      FLASK_APP: feedon
+      FLASK_RUN_PORT: 3000
+      FLASK_RUN_HOST: 0.0.0.0
+      DB_PATH: /var/lib/data/feedon.db
+    volumes:
+      - ./data:/var/lib/data
