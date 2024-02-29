@@ -1,12 +1,14 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/debian
 {
-	"name": "Debian",
+	"name": "Feedon",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/base:bookworm",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
-	}
+	},
+	"postAttachCommand": "git config --global --add safe.directory /workspaces/feedon",
+	"postCreateCommand": "poetry install --no-root",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
