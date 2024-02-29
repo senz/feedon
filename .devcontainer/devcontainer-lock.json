@@ -4,6 +4,11 @@
       "version": "2.0.17",
       "resolved": "ghcr.io/devcontainers-contrib/features/poetry@sha256:85ad0e0190682104214e5ae4faa2bf8c2e181802567c01db0ef2dc9a70790f32",
       "integrity": "sha256:85ad0e0190682104214e5ae4faa2bf8c2e181802567c01db0ef2dc9a70790f32"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "1.0.11",
+      "resolved": "ghcr.io/devcontainers/features/github-cli@sha256:464564228ccdd6028f01f8a62a3cfbaf76e9ba7953b29ac0e53ba2c262604312",
+      "integrity": "sha256:464564228ccdd6028f01f8a62a3cfbaf76e9ba7953b29ac0e53ba2c262604312"
     }
   }
 }
