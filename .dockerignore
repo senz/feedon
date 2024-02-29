@@ -2,7 +2,5 @@
 .devcontainer/
 .vscode/
 docs/
-pyproject.toml
-poetry.lock
 __pycache__/
 data/
